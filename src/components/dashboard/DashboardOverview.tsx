@@ -1,6 +1,6 @@
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { License, Users, Package, ShoppingCart } from "lucide-react";
+import { KeyRound, Users, Package, ShoppingCart, Key } from "lucide-react";
 import { useMemo } from "react";
 
 const DashboardOverview = () => {
@@ -11,7 +11,7 @@ const DashboardOverview = () => {
       value: "246", 
       description: "Active licenses", 
       change: "+12% from last month",
-      icon: <License className="h-5 w-5 text-primary" />
+      icon: <Key className="h-5 w-5 text-primary" />
     },
     { 
       title: "Active Users", 
@@ -66,7 +66,7 @@ const DashboardOverview = () => {
             <div className="space-y-4">
               {Array.from({length: 5}).map((_, i) => (
                 <div key={i} className="flex items-center gap-3 p-2 border rounded-md text-sm hover:bg-muted">
-                  <License className="h-4 w-4 text-primary" />
+                  <Key className="h-4 w-4 text-primary" />
                   <div className="flex-1">
                     <div className="font-medium">LICENSE-{Math.random().toString(36).substring(2, 10).toUpperCase()}</div>
                     <div className="text-xs text-muted-foreground">Product {i+1} • Created {i+1} days ago</div>
