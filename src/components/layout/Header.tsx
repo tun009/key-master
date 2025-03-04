@@ -15,8 +15,12 @@ import {
   DropdownMenuTrigger 
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
+import { ThemeToggle } from "@/components/theme/ThemeToggle";
+import { LanguageSwitcher } from "@/components/language/LanguageSwitcher";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export const Header = () => {
+  const { t } = useLanguage();
   const [notifications] = useState([
     { id: 1, message: "New license key generated", time: "1 hour ago" },
     { id: 2, message: "User John Doe registered", time: "3 hours ago" },
@@ -24,7 +28,10 @@ export const Header = () => {
   ]);
 
   return (
-    <header className="h-16 bg-white border-b border-gray-200 px-4 flex items-center justify-end gap-4">
+    <header className="h-16 bg-white border-b border-gray-200 px-4 flex items-center justify-end gap-4 dark:bg-gray-900 dark:border-gray-800 dark:text-white">
+      <LanguageSwitcher />
+      <ThemeToggle />
+      
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" size="icon" className="relative">
@@ -36,19 +43,19 @@ export const Header = () => {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="w-80">
-          <DropdownMenuLabel>Notifications</DropdownMenuLabel>
+          <DropdownMenuLabel>{t("notifications")}</DropdownMenuLabel>
           <DropdownMenuSeparator />
           {notifications.map((notification) => (
             <DropdownMenuItem key={notification.id} className="cursor-pointer p-3">
               <div className="flex flex-col gap-1">
                 <span>{notification.message}</span>
-                <span className="text-xs text-gray-500">{notification.time}</span>
+                <span className="text-xs text-gray-500 dark:text-gray-400">{notification.time}</span>
               </div>
             </DropdownMenuItem>
           ))}
           <DropdownMenuSeparator />
           <DropdownMenuItem className="cursor-pointer justify-center text-primary">
-            View all notifications
+            {t("viewAllNotifications")}
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
@@ -63,12 +70,12 @@ export const Header = () => {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
-          <DropdownMenuLabel>My Account</DropdownMenuLabel>
+          <DropdownMenuLabel>{t("myAccount")}</DropdownMenuLabel>
           <DropdownMenuSeparator />
-          <DropdownMenuItem>Profile</DropdownMenuItem>
-          <DropdownMenuItem>Settings</DropdownMenuItem>
+          <DropdownMenuItem>{t("profile")}</DropdownMenuItem>
+          <DropdownMenuItem>{t("settings")}</DropdownMenuItem>
           <DropdownMenuSeparator />
-          <DropdownMenuItem>Log out</DropdownMenuItem>
+          <DropdownMenuItem>{t("logOut")}</DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
     </header>
