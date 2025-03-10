@@ -1,39 +1,40 @@
-
-import { Toaster } from "@/components/ui/toaster";
-import { Toaster as Sonner } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import React from "react";
+import { Routes, Route } from "react-router-dom";
 import { ThemeProvider } from "@/contexts/ThemeContext";
 import { LanguageProvider } from "@/contexts/LanguageContext";
-import Index from "./pages/Index";
-import NotFound from "./pages/NotFound";
+import { Toaster } from "@/components/ui/toaster";
+import Header from "@/components/layout/Header";
+import Sidebar from "@/components/layout/Sidebar";
+import Index from "@/components/dashboard/Index";
+import ProductsList from "@/components/products/ProductsList";
+import ProductDetail from "@/components/products/ProductDetail";
+import NotFound from "@/components/NotFound";
 
-const queryClient = new QueryClient();
-
-const App = () => (
-  <QueryClientProvider client={queryClient}>
+function App() {
+  return (
     <ThemeProvider>
       <LanguageProvider>
-        <TooltipProvider>
+        <div className="min-h-screen bg-background text-foreground">
+          <Header />
+          <div className="flex">
+            <Sidebar />
+            <main className="flex-1 p-6">
+              <div className="container mx-auto max-w-7xl">
+                <Routes>
+                  <Route path="/" element={<Index />} />
+                  <Route path="/products" element={<ProductsList />} />
+                  <Route path="/products/:productId" element={<ProductDetail />} />
+                  {/* Keep other routes */}
+                  <Route path="*" element={<NotFound />} />
+                </Routes>
+              </div>
+            </main>
+          </div>
           <Toaster />
-          <Sonner />
-          <BrowserRouter>
-            <Routes>
-              <Route path="/" element={<Index />} />
-              <Route path="/licenses" element={<Index />} />
-              <Route path="/products" element={<Index />} />
-              <Route path="/users" element={<Index />} />
-              <Route path="/orders" element={<Index />} />
-              <Route path="/settings" element={<Index />} />
-              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </BrowserRouter>
-        </TooltipProvider>
+        </div>
       </LanguageProvider>
     </ThemeProvider>
-  </QueryClientProvider>
-);
+  );
+}
 
 export default App;

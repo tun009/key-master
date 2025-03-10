@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -32,7 +31,8 @@ import {
   Key,
   FileText,
   Image,
-  Upload
+  Upload,
+  Eye
 } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import { Badge } from "@/components/ui/badge";
@@ -41,6 +41,43 @@ import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useNavigate } from "react-router-dom";
+
+export interface Package {
+  id?: number;
+  name: string;
+  price: number;
+  price_unit: string;
+  limit_devices: number;
+  time_of_use: number;
+  is_active: boolean;
+  status: string;
+}
+
+export interface Product {
+  id: number;
+  name: string;
+  slug: string;
+  version: string;
+  packages: number;
+  licenses: number;
+  isActive: boolean;
+  created: string;
+  uuid?: string;
+  update_url?: string;
+  download_url?: string;
+  encrypt_public_key?: string;
+  encrypt_private_key?: string;
+  status?: string;
+  thumbnail?: File | null;
+  post?: {
+    title: string;
+    description: string;
+    html: string;
+    keywords: string;
+    show_full_page: boolean;
+  };
+}
 
 const ProductsList = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -48,8 +85,8 @@ const ProductsList = () => {
   const [activeTab, setActiveTab] = useState("general");
   const { t } = useLanguage();
   const [thumbnailPreview, setThumbnailPreview] = useState<string | null>(null);
+  const navigate = useNavigate();
   
-  // Initial form state
   const [productForm, setProductForm] = useState({
     name: "",
     slug: "",
@@ -69,7 +106,6 @@ const ProductsList = () => {
     }
   });
 
-  // Handle form input changes
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { id, value } = e.target;
     
@@ -90,7 +126,6 @@ const ProductsList = () => {
     }
   };
 
-  // Handle file upload
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0] || null;
     if (file) {
@@ -99,7 +134,6 @@ const ProductsList = () => {
         thumbnail: file
       });
       
-      // Create a preview URL
       const reader = new FileReader();
       reader.onloadend = () => {
         setThumbnailPreview(reader.result as string);
@@ -108,7 +142,6 @@ const ProductsList = () => {
     }
   };
 
-  // Handle switch toggle
   const handleSwitchChange = (checked: boolean) => {
     setProductForm({
       ...productForm,
@@ -119,15 +152,17 @@ const ProductsList = () => {
     });
   };
 
-  // Handle status change
   const handleStatusChange = (status: string) => {
     setProductForm({
       ...productForm,
       status: status
     });
   };
-  
-  // Mock data for initial UI development
+
+  const handleViewProductDetails = (productId: number) => {
+    navigate(`/products/${productId}`);
+  };
+
   const products = Array.from({ length: 6 }).map((_, i) => ({
     id: i + 1,
     name: `Product ${i + 1}`,
@@ -145,14 +180,10 @@ const ProductsList = () => {
     product.version.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  // Form submit handler
   const handleCreateProduct = () => {
     console.log("Product data to submit:", productForm);
-    // Here you would typically send this data to your API
-    
     setShowDialog(false);
     
-    // Reset form
     setProductForm({
       name: "",
       slug: "",
@@ -180,7 +211,7 @@ const ProductsList = () => {
       description: "New product has been added successfully",
     });
   };
-  
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
@@ -246,6 +277,10 @@ const ProductsList = () => {
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
                         <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                        <DropdownMenuItem onClick={() => handleViewProductDetails(product.id)}>
+                          <Eye className="mr-2 h-4 w-4" />
+                          View Details
+                        </DropdownMenuItem>
                         <DropdownMenuItem>
                           <Edit className="mr-2 h-4 w-4" />
                           Edit Product
