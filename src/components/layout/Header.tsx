@@ -1,6 +1,7 @@
 
 import { useState } from "react";
-import { Bell } from "lucide-react";
+import { Bell, LogOut, Settings, User } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import { 
   Avatar, 
   AvatarFallback, 
@@ -18,14 +19,22 @@ import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/theme/ThemeToggle";
 import { LanguageSwitcher } from "@/components/language/LanguageSwitcher";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useAuth } from "@/contexts/AuthContext";
 
 export const Header = () => {
   const { t } = useLanguage();
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
   const [notifications] = useState([
     { id: 1, message: "New license key generated", time: "1 hour ago" },
     { id: 2, message: "User John Doe registered", time: "3 hours ago" },
     { id: 3, message: "New order #12345 received", time: "5 hours ago" },
   ]);
+
+  const handleLogout = () => {
+    logout();
+    navigate("/login");
+  };
 
   return (
     <header className="h-16 bg-white border-b border-gray-200 px-4 flex items-center justify-end gap-4 dark:bg-gray-900 dark:border-gray-800 dark:text-white">
@@ -65,17 +74,27 @@ export const Header = () => {
           <Button variant="ghost" size="icon" className="rounded-full">
             <Avatar>
               <AvatarImage src="https://github.com/shadcn.png" />
-              <AvatarFallback>AD</AvatarFallback>
+              <AvatarFallback>{user ? user.name.substring(0, 2).toUpperCase() : "U"}</AvatarFallback>
             </Avatar>
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
-          <DropdownMenuLabel>{t("myAccount")}</DropdownMenuLabel>
+          <DropdownMenuLabel>{user ? user.name : t("myAccount")}</DropdownMenuLabel>
+          {user && <DropdownMenuLabel className="text-xs text-muted-foreground">{user.email}</DropdownMenuLabel>}
           <DropdownMenuSeparator />
-          <DropdownMenuItem>{t("profile")}</DropdownMenuItem>
-          <DropdownMenuItem>{t("settings")}</DropdownMenuItem>
+          <DropdownMenuItem>
+            <User className="mr-2 h-4 w-4" />
+            {t("profile")}
+          </DropdownMenuItem>
+          <DropdownMenuItem>
+            <Settings className="mr-2 h-4 w-4" />
+            {t("settings")}
+          </DropdownMenuItem>
           <DropdownMenuSeparator />
-          <DropdownMenuItem>{t("logOut")}</DropdownMenuItem>
+          <DropdownMenuItem onClick={handleLogout}>
+            <LogOut className="mr-2 h-4 w-4" />
+            {t("logOut")}
+          </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
     </header>
