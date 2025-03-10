@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { 
@@ -28,7 +27,7 @@ import {
   CheckCircle, 
   X,
   MoreVertical,
-  Device,
+  Smartphone,
   Clock,
   DollarSign
 } from "lucide-react";
@@ -59,7 +58,6 @@ const ProductDetail = () => {
   const [error, setError] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState("info");
 
-  // Package form state
   const [packageForm, setPackageForm] = useState<PackageItem>({
     name: "",
     price: 99.99,
@@ -70,7 +68,6 @@ const ProductDetail = () => {
     status: "active"
   });
 
-  // Handle form input changes
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value, type } = e.target;
     
@@ -87,7 +84,6 @@ const ProductDetail = () => {
     }
   };
 
-  // Handle switch toggle
   const handleSwitchChange = (checked: boolean) => {
     setPackageForm({
       ...packageForm,
@@ -95,7 +91,6 @@ const ProductDetail = () => {
     });
   };
 
-  // Handle status change
   const handleStatusChange = (status: string) => {
     setPackageForm({
       ...packageForm,
@@ -103,14 +98,10 @@ const ProductDetail = () => {
     });
   };
 
-  // Fetch product data
   useEffect(() => {
-    // In a real app, you would fetch from an API
-    // This is mock data for demonstration
     const fetchData = () => {
       setLoading(true);
       try {
-        // Simulate API call
         setTimeout(() => {
           const mockProduct = {
             id: parseInt(productId || "0"),
@@ -181,12 +172,9 @@ const ProductDetail = () => {
     fetchData();
   }, [productId]);
 
-  // Form submit handler for new package
   const handleCreatePackage = () => {
     console.log("Package data to submit:", packageForm);
     
-    // In a real app, you would send this data to your API
-    // For now, we'll just add it to our local state
     const newPackage: PackageItem = {
       ...packageForm,
       id: packages.length + 1
@@ -195,7 +183,6 @@ const ProductDetail = () => {
     setPackages([...packages, newPackage]);
     setShowPackageDialog(false);
     
-    // Reset form
     setPackageForm({
       name: "",
       price: 99.99,
@@ -212,12 +199,9 @@ const ProductDetail = () => {
     });
   };
 
-  // Handle delete package
   const handleDeletePackage = (packageId: number | undefined) => {
     if (!packageId) return;
     
-    // In a real app, you would send a delete request to your API
-    // For now, we'll just filter the local state
     setPackages(packages.filter(pkg => pkg.id !== packageId));
     
     toast({
@@ -370,7 +354,7 @@ const ProductDetail = () => {
                         </TableCell>
                         <TableCell>
                           <div className="flex items-center gap-1">
-                            <Device className="h-3 w-3 text-muted-foreground" />
+                            <Smartphone className="h-3 w-3 text-muted-foreground" />
                             {pkg.limit_devices}
                           </div>
                         </TableCell>
@@ -429,7 +413,6 @@ const ProductDetail = () => {
         </TabsContent>
       </Tabs>
       
-      {/* Package Dialog */}
       <Dialog open={showPackageDialog} onOpenChange={setShowPackageDialog}>
         <DialogContent className="sm:max-w-[550px]">
           <DialogHeader>
