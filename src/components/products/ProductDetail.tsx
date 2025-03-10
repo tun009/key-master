@@ -28,7 +28,7 @@ import {
   CheckCircle, 
   X,
   MoreVertical,
-  Devices,
+  Device,
   Clock,
   DollarSign
 } from "lucide-react";
@@ -46,21 +46,21 @@ import {
   DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { Product, Package } from "./ProductsList";
+import { Product, PackageItem } from "./ProductsList";
 
 const ProductDetail = () => {
   const { productId } = useParams();
   const navigate = useNavigate();
   const { t } = useLanguage();
   const [product, setProduct] = useState<Product | null>(null);
-  const [packages, setPackages] = useState<Package[]>([]);
+  const [packages, setPackages] = useState<PackageItem[]>([]);
   const [showPackageDialog, setShowPackageDialog] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState("info");
 
   // Package form state
-  const [packageForm, setPackageForm] = useState<Package>({
+  const [packageForm, setPackageForm] = useState<PackageItem>({
     name: "",
     price: 99.99,
     price_unit: "USD",
@@ -135,7 +135,7 @@ const ProductDetail = () => {
             }
           };
 
-          const mockPackages: Package[] = [
+          const mockPackages: PackageItem[] = [
             {
               id: 1,
               name: "Basic",
@@ -187,7 +187,7 @@ const ProductDetail = () => {
     
     // In a real app, you would send this data to your API
     // For now, we'll just add it to our local state
-    const newPackage: Package = {
+    const newPackage: PackageItem = {
       ...packageForm,
       id: packages.length + 1
     };
@@ -370,7 +370,7 @@ const ProductDetail = () => {
                         </TableCell>
                         <TableCell>
                           <div className="flex items-center gap-1">
-                            <Devices className="h-3 w-3 text-muted-foreground" />
+                            <Device className="h-3 w-3 text-muted-foreground" />
                             {pkg.limit_devices}
                           </div>
                         </TableCell>
