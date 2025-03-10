@@ -71,10 +71,26 @@ const LandingProductDetail: React.FC<LandingProductDetailProps> = ({ product, on
     return (total / reviews.length).toFixed(1);
   };
 
+  const getProductImage = () => {
+    const images = [
+      "photo-1488590528505-98d2b5aba04b",
+      "photo-1518770660439-4636190af475", 
+      "photo-1461749280684-dccba630e2f6",
+      "photo-1486312338219-ce68d2c6f44d",
+      "photo-1649972904349-6e44c42644a7"
+    ];
+    
+    const imageIndex = (product.id - 1) % images.length;
+    return `https://images.unsplash.com/${images[imageIndex]}?auto=format&fit=crop&w=800&q=80`;
+  };
+
   return (
     <div className="space-y-12">
       <div className={`rounded-xl overflow-hidden ${theme === "dark" ? "bg-gray-800" : "bg-white"} shadow-lg`}>
-        <div className={`h-48 ${theme === "dark" ? "bg-gradient-to-r from-blue-900 to-purple-900" : "bg-gradient-to-r from-blue-500 to-purple-600"}`}>
+        <div 
+          className={`h-64 bg-center bg-cover`}
+          style={{ backgroundImage: `url(${getProductImage()})` }}
+        >
         </div>
         <div className="p-6">
           <div className="flex flex-col md:flex-row justify-between items-start gap-4">

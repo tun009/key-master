@@ -119,9 +119,21 @@ const LandingPage = () => {
     }
   ];
 
+  const getProductImage = (id: number) => {
+    const images = [
+      "photo-1488590528505-98d2b5aba04b",
+      "photo-1518770660439-4636190af475", 
+      "photo-1461749280684-dccba630e2f6",
+      "photo-1486312338219-ce68d2c6f44d",
+      "photo-1649972904349-6e44c42644a7"
+    ];
+    
+    const imageIndex = (id - 1) % images.length;
+    return `https://images.unsplash.com/${images[imageIndex]}?auto=format&fit=crop&w=800&q=80`;
+  };
+
   return (
     <div className={`min-h-screen ${theme === "dark" ? "bg-gray-900 text-white" : "bg-gray-50 text-gray-900"}`}>
-      {/* Header */}
       <header className={`w-full ${theme === "dark" ? "bg-gray-800" : "bg-white"} shadow-md`}>
         <div className="container mx-auto px-4 py-4">
           <div className="flex justify-between items-center">
@@ -151,7 +163,6 @@ const LandingPage = () => {
         </div>
       </header>
 
-      {/* Hero Section */}
       {!showProductDetail && (
         <section className={`py-20 px-4 ${theme === "dark" ? "bg-gradient-to-b from-gray-800 to-gray-900" : "bg-gradient-to-b from-blue-50 to-blue-100"}`}>
           <div className="container mx-auto text-center">
@@ -175,7 +186,6 @@ const LandingPage = () => {
         </section>
       )}
 
-      {/* Main Content */}
       <main className="container mx-auto px-4 py-12">
         {showProductDetail && selectedProduct ? (
           <LandingProductDetail 
@@ -209,7 +219,10 @@ const LandingPage = () => {
                     }`}
                     onClick={() => handleProductClick(product)}
                   >
-                    <div className={`h-32 ${theme === "dark" ? "bg-gradient-to-r from-purple-900 to-blue-900" : "bg-gradient-to-r from-blue-400 to-purple-500"}`} />
+                    <div 
+                      className={`h-48 bg-center bg-cover`} 
+                      style={{ backgroundImage: `url(${getProductImage(product.id)})` }}
+                    />
                     <CardHeader>
                       <div className="flex justify-between items-start">
                         <div>
@@ -218,7 +231,10 @@ const LandingPage = () => {
                             v{product.version}
                           </CardDescription>
                         </div>
-                        <Badge variant={product.isActive ? "default" : "secondary"}>
+                        <Badge 
+                          variant="default" 
+                          className={`${product.isActive ? "bg-green-500 hover:bg-green-600" : "bg-gray-500 hover:bg-gray-600"}`}
+                        >
                           {product.isActive ? t("active") : t("inactive")}
                         </Badge>
                       </div>
@@ -238,7 +254,7 @@ const LandingPage = () => {
                         </div>
                       </div>
                     </CardContent>
-                    <CardFooter className="border-t flex justify-between items-center">
+                    <CardFooter className="border-t flex justify-between items-center pt-4">
                       <div className="flex items-center">
                         <div className="flex">
                           {[1, 2, 3, 4, 5].map((star) => (
@@ -250,7 +266,7 @@ const LandingPage = () => {
                         </div>
                         <span className="text-sm ml-2">({Math.floor(Math.random() * 100) + 5})</span>
                       </div>
-                      <Button size="sm" variant="secondary">
+                      <Button size="sm" variant="secondary" className="mt-2">
                         {t("viewDetails")}
                       </Button>
                     </CardFooter>
@@ -262,7 +278,6 @@ const LandingPage = () => {
         )}
       </main>
 
-      {/* Features Section */}
       {!showProductDetail && (
         <section className={`py-16 ${theme === "dark" ? "bg-gray-800" : "bg-gray-100"}`}>
           <div className="container mx-auto px-4">
@@ -289,7 +304,6 @@ const LandingPage = () => {
         </section>
       )}
 
-      {/* Contact Section */}
       {!showProductDetail && (
         <section className="py-16">
           <div className="container mx-auto px-4">
@@ -298,7 +312,6 @@ const LandingPage = () => {
         </section>
       )}
 
-      {/* Footer */}
       <footer className={`py-12 ${theme === "dark" ? "bg-gray-900 text-gray-300 border-t border-gray-800" : "bg-gray-200 text-gray-700 border-t border-gray-300"}`}>
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
