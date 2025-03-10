@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate, Link } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useTheme } from "@/contexts/ThemeContext";
 import { ArrowLeft, Star, ShoppingCart, Calendar, Package, CheckCircle, Shield, Zap, Clock } from "lucide-react";
@@ -26,6 +27,7 @@ const LandingProductDetail: React.FC<LandingProductDetailProps> = ({ product, on
   const [packages, setPackages] = useState<PackageItem[]>([]);
   const [reviews, setReviews] = useState<Review[]>([]);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = () => {
@@ -84,6 +86,10 @@ const LandingProductDetail: React.FC<LandingProductDetailProps> = ({ product, on
     return `https://images.unsplash.com/${images[imageIndex]}?auto=format&fit=crop&w=800&q=80`;
   };
 
+  const handleBuyNow = () => {
+    navigate("/login");
+  };
+
   return (
     <div className="space-y-12">
       <div className={`rounded-xl overflow-hidden ${theme === "dark" ? "bg-gray-800" : "bg-white"} shadow-lg`}>
@@ -125,13 +131,14 @@ const LandingProductDetail: React.FC<LandingProductDetailProps> = ({ product, on
             <div className="flex flex-col items-end gap-3">
               <Badge 
                 variant="default"
-                className={`text-sm px-3 py-1 mb-2 ${product.isActive ? "bg-green-500 hover:bg-green-600" : "bg-gray-500 hover:bg-gray-600"}`}
+                className={`text-sm px-3 py-1 mb-2 ${product.isActive ? "bg-green-500 hover:bg-green-600" : "bg-red-500 hover:bg-red-600"}`}
               >
                 {product.isActive ? t("active") : t("inactive")}
               </Badge>
               <Button 
                 size="lg" 
                 className="px-8 py-6 text-lg bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 transition-all duration-300 shadow-lg hover:shadow-xl"
+                onClick={handleBuyNow}
               >
                 <ShoppingCart className="mr-2 h-5 w-5" />
                 {t("buyNow")}
@@ -195,7 +202,7 @@ const LandingProductDetail: React.FC<LandingProductDetailProps> = ({ product, on
         <h2 className="text-3xl font-semibold mb-8">{t("packages")}</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {packages.map((pkg) => (
-            <Card key={pkg.id} className={`${theme === "dark" ? "bg-gray-800 border-gray-700" : "bg-white"} transition-all duration-300 hover:shadow-xl hover:translate-y-[-4px]`}>
+            <Card key={pkg.id} className={`${theme === "dark" ? "bg-gray-800 border-gray-700" : "bg-white"} transition-all duration-300 hover:shadow-xl hover:translate-y-[-4px] flex flex-col`}>
               <CardHeader className={`${pkg.name === "Premium" ? "bg-gradient-to-r from-amber-400 to-yellow-500" : pkg.name === "Enterprise" ? "bg-gradient-to-r from-purple-600 to-indigo-600" : "bg-gray-100 dark:bg-gray-700"} text-center py-6`}>
                 <CardTitle className={`${pkg.name === "Premium" || pkg.name === "Enterprise" ? "text-white" : ""}`}>
                   {pkg.name}
@@ -207,7 +214,7 @@ const LandingProductDetail: React.FC<LandingProductDetailProps> = ({ product, on
                   {pkg.time_of_use} {t("months")}
                 </div>
               </CardHeader>
-              <CardContent className="pt-6">
+              <CardContent className="pt-6 flex-grow">
                 <ul className="space-y-3">
                   <li className="flex items-center">
                     <CheckCircle className="h-5 w-5 text-green-500 mr-2" />
@@ -234,9 +241,11 @@ const LandingProductDetail: React.FC<LandingProductDetailProps> = ({ product, on
                     </li>
                   )}
                 </ul>
-                <Button className="w-full mt-6">
-                  {t("buyNow")}
-                </Button>
+                <div className="mt-6 pt-4">
+                  <Button className="w-full" onClick={handleBuyNow}>
+                    {t("buyNow")}
+                  </Button>
+                </div>
               </CardContent>
             </Card>
           ))}

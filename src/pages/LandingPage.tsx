@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -233,7 +234,7 @@ const LandingPage = () => {
                         </div>
                         <Badge 
                           variant="default" 
-                          className={`${product.isActive ? "bg-green-500 hover:bg-green-600" : "bg-gray-500 hover:bg-gray-600"}`}
+                          className={`${product.isActive ? "bg-green-500 hover:bg-green-600" : "bg-red-500 hover:bg-red-600"}`}
                         >
                           {product.isActive ? t("active") : t("inactive")}
                         </Badge>
@@ -266,7 +267,7 @@ const LandingPage = () => {
                         </div>
                         <span className="text-sm ml-2">({Math.floor(Math.random() * 100) + 5})</span>
                       </div>
-                      <Button size="sm" variant="secondary" className="mt-2">
+                      <Button size="sm" variant="secondary" className="mt-3">
                         {t("viewDetails")}
                       </Button>
                     </CardFooter>
