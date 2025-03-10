@@ -30,7 +30,9 @@ import {
   Globe,
   Download,
   Key,
-  FileText
+  FileText,
+  Image,
+  Upload
 } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import { Badge } from "@/components/ui/badge";
@@ -45,6 +47,7 @@ const ProductsList = () => {
   const [showDialog, setShowDialog] = useState(false);
   const [activeTab, setActiveTab] = useState("general");
   const { t } = useLanguage();
+  const [thumbnailPreview, setThumbnailPreview] = useState<string | null>(null);
   
   // Initial form state
   const [productForm, setProductForm] = useState({
@@ -56,6 +59,7 @@ const ProductsList = () => {
     encrypt_public_key: "",
     encrypt_private_key: "",
     status: "active",
+    thumbnail: null as File | null,
     post: {
       title: "",
       description: "",
@@ -83,6 +87,24 @@ const ProductsList = () => {
         ...productForm,
         [id]: value
       });
+    }
+  };
+
+  // Handle file upload
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0] || null;
+    if (file) {
+      setProductForm({
+        ...productForm,
+        thumbnail: file
+      });
+      
+      // Create a preview URL
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setThumbnailPreview(reader.result as string);
+      };
+      reader.readAsDataURL(file);
     }
   };
 
@@ -140,6 +162,7 @@ const ProductsList = () => {
       encrypt_public_key: "",
       encrypt_private_key: "",
       status: "active",
+      thumbnail: null,
       post: {
         title: "",
         description: "",
@@ -149,6 +172,7 @@ const ProductsList = () => {
       }
     });
     
+    setThumbnailPreview(null);
     setActiveTab("general");
     
     toast({
@@ -290,6 +314,46 @@ const ProductsList = () => {
                     value={productForm.slug}
                     onChange={handleInputChange}
                   />
+                </div>
+                <div className="grid grid-cols-4 items-start gap-4">
+                  <label htmlFor="thumbnail" className="text-right text-sm pt-2">Thumbnail</label>
+                  <div className="col-span-3">
+                    <div className="flex items-center gap-4">
+                      <div className="flex-shrink-0">
+                        {thumbnailPreview ? (
+                          <div className="relative w-24 h-24 overflow-hidden rounded-md border">
+                            <img 
+                              src={thumbnailPreview} 
+                              alt="Thumbnail preview" 
+                              className="object-cover w-full h-full"
+                            />
+                          </div>
+                        ) : (
+                          <div className="w-24 h-24 flex items-center justify-center rounded-md border bg-muted">
+                            <Image className="h-8 w-8 text-muted-foreground" />
+                          </div>
+                        )}
+                      </div>
+                      <div className="flex-grow">
+                        <label htmlFor="thumbnailUpload" className="cursor-pointer">
+                          <div className="flex items-center gap-2 px-4 py-2 border rounded-md hover:bg-muted">
+                            <Upload className="h-4 w-4" />
+                            <span>Upload Image</span>
+                          </div>
+                          <input 
+                            type="file" 
+                            id="thumbnailUpload" 
+                            accept="image/*" 
+                            className="hidden"
+                            onChange={handleFileUpload}
+                          />
+                        </label>
+                        <p className="text-xs text-muted-foreground mt-1">
+                          Recommended size: 512x512px. Max size: 2MB
+                        </p>
+                      </div>
+                    </div>
+                  </div>
                 </div>
                 <div className="grid grid-cols-4 items-center gap-4">
                   <label htmlFor="version" className="text-right text-sm">Version</label>
