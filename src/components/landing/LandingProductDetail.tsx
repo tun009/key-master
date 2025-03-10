@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useTheme } from "@/contexts/ThemeContext";
@@ -109,12 +108,16 @@ const LandingProductDetail: React.FC<LandingProductDetailProps> = ({ product, on
             </div>
             <div className="flex flex-col items-end gap-3">
               <Badge 
-                variant={product.isActive ? "default" : "secondary"}
-                className="text-sm px-3 py-1 mb-2"
+                variant="default"
+                className={`text-sm px-3 py-1 mb-2 ${product.isActive ? "bg-green-500 hover:bg-green-600" : "bg-gray-500 hover:bg-gray-600"}`}
               >
                 {product.isActive ? t("active") : t("inactive")}
               </Badge>
-              <Button size="lg" className="px-8 py-6 text-lg">
+              <Button 
+                size="lg" 
+                className="px-8 py-6 text-lg bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 transition-all duration-300 shadow-lg hover:shadow-xl"
+              >
+                <ShoppingCart className="mr-2 h-5 w-5" />
                 {t("buyNow")}
               </Button>
             </div>
@@ -278,12 +281,6 @@ const LandingProductDetail: React.FC<LandingProductDetailProps> = ({ product, on
           ))}
         </div>
       </section>
-      
-      <div className="sticky bottom-6 w-full flex justify-center">
-        <Button size="lg" className="px-8 py-4 shadow-lg">
-          {t("buyNow")}
-        </Button>
-      </div>
     </div>
   );
 };

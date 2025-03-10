@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -10,6 +9,7 @@ import { LanguageSwitcher } from "@/components/language/LanguageSwitcher";
 import { Product } from "@/components/products/types";
 import { Badge } from "@/components/ui/badge";
 import LandingProductDetail from "@/components/landing/LandingProductDetail";
+import ContactForm from "@/components/landing/ContactForm";
 
 const LandingPage = () => {
   const { t, language } = useLanguage();
@@ -20,7 +20,6 @@ const LandingPage = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Fetch mock products
     const fetchProducts = () => {
       setLoading(true);
       setTimeout(() => {
@@ -286,12 +285,15 @@ const LandingPage = () => {
                 </div>
               ))}
             </div>
+          </div>
+        </section>
+      )}
 
-            <div className="mt-16 text-center">
-              <Button size="lg" className="px-8 py-6 text-lg">
-                {t("getStartedNow")}
-              </Button>
-            </div>
+      {/* Contact Section */}
+      {!showProductDetail && (
+        <section className="py-16">
+          <div className="container mx-auto px-4">
+            <ContactForm />
           </div>
         </section>
       )}
