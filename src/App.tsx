@@ -13,6 +13,7 @@ import ProductDetail from "@/components/products/ProductDetail";
 import NotFound from "@/components/NotFound";
 import Login from "@/pages/Login";
 import Register from "@/pages/Register";
+import LandingPage from "@/pages/LandingPage";
 
 // Protected Route component to check if user is logged in
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
@@ -30,6 +31,7 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
 function AppRoutes() {
   return (
     <Routes>
+      <Route path="/landing" element={<LandingPage />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route
